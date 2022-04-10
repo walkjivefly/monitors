@@ -1,0 +1,137 @@
+# layout optimised for an 80*56 terminal window
+gauges:
+#  - title: DISK
+#    position: [[40, 0], [40, 2]]
+#    rate-ms: 5000
+#    cur:
+#        sample: df -m / | awk '/sda2/ {print $3}'
+#    max:
+#        sample: df -m / | awk '/sda2/ {print $2}'
+#    min:
+#        sample: echo 0
+  - title: RAM
+    position: [[40, 0], [40, 2]]
+    rate-ms: 5000
+    cur:
+        sample: free | awk '/Mem:/ {print $3}'
+    max:
+        sample: free | awk '/Mem:/ {print $2}'
+    min:
+        sample: echo 0
+  - title: SWAP
+    position: [[40, 3], [40, 2]]
+    rate-ms: 5000
+    cur:
+        sample: free | awk '/Swap:/ {print $3}'
+    max:
+        sample: free | awk '/Swap:/ {print $2}'
+    min:
+        sample: echo 0
+sparklines:
+  - title: CPU usage
+    position: [[0, 0], [40, 13]]
+    rate-ms: 1000
+    scale: 0
+    sample: ps -A -o %cpu | awk '{s+=$1} END {print s}'
+textboxes:
+  - title: Disk
+    position: [[40, 6], [40, 3]]
+    sample: df -m / | awk 'NR==2 {print $6 " " $2 " " $3 " " $4 " " $5}'
+    rate-ms: 15000
+  - title: Load average
+    position: [[40, 9], [40, 4]]
+    rate-ms: 15000
+    sample: cat /proc/loadavg | awk '{print $1 ", " $2 ", " $3}'
+  - title: SN01 BLOCK
+    position: [[0, 13], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_block.sh
+  - title: SN01 BTC
+    position: [[20, 13], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_btc.sh
+  - title: SN01 CRW
+    position: [[40, 13], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_crw.sh
+  - title: SN01 DASH
+    position: [[60, 13], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_dash.sh
+  - title: SN01 DOGE
+    position: [[0, 17], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_doge.sh
+  - title: SN01 GLC
+    position: [[20, 17], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_glc.sh
+  - title: SN01 LTC
+    position: [[40, 17], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_ltc.sh
+  - title: SN01 MERGE
+    position: [[60, 17], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_merge.sh
+  - title: SN01 MUE
+    position: [[0, 21], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_mue.sh
+  - title: SN01 PHR
+    position: [[20,21], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_phr.sh
+  - title: SN01 PIVX
+    position: [[40, 21], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_pivx.sh
+  - title: SN01 RVN
+    position: [[60, 21], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_rvn.sh
+  - title: SN01 SCA
+    position: [[0, 24], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_sca.sh
+  - title: SN01 SCC
+    position: [[20, 24], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_scc.sh
+  - title: SN01 SYS
+    position: [[40, 24], [20, 4]]
+    rate-ms: 20000
+    sample: ./height_sys.sh
+  - title: SN01 NEVM
+    position: [[60, 24], [20, 4]]
+    rate-ms: 20000
+    sample: ./height_nevm.sh
+  - title: SN01 TRC
+    position: [[0, 28], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_trc.sh
+  - title: SN01 UNO
+    position: [[20, 28], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_uno.sh
+  - title: SN01 XLQ
+    position: [[40, 28], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_xlq.sh
+  - title: SN01 XVG
+    position: [[60, 28], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_xvg.sh
+  - title: SN01 ZNZ
+    position: [[0, 32], [20, 4]]
+    rate-ms: 15000
+    sample: ./height_znz.sh
+# oversize boxes due to blockheights > 10000000
+  - title: SN01 DGB
+    position: [[20, 32], [30, 4]]
+    rate-ms: 15000
+    sample: ./height_dgb.sh
+  - title: SN01 VIA
+    position: [[50, 32], [30, 4]]
+    rate-ms: 15000
+    sample: ./height_via.sh
