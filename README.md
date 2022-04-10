@@ -9,10 +9,18 @@ they provide rudimentary monitoring of the XBridge wallets in use by
 a servicenode and allow for detection of potentially mis-synced 
 wallets.    
 
+![](screenshot.png)
+
 Each script monitors one particular blockchain and reports the local 
-height and the height at "the explorer". Any height difference greater 
-than say 3 blocks is worthy of investigation. If sampler/monitors 
-reports a block height difference you could use these
+height and the height at "the explorer". The two values are separated by
+a slash character, for example `2450806/2450805`. If the block height
+is unavailable at either source then the height at that source is
+shown as `problem`.
+
+Any height difference greater than, say, three blocks, is worthy of 
+investigation. Chainz explorers often lag the true block count by 
+one to three blocks, especially for chains with one-minute block times. 
+If sampler/monitors reports a block height difference you could use these
 [unfork](https://github.com/walkjivefly/unfork) 
 scripts to find and potentially correct a forked chain.
 
@@ -31,7 +39,7 @@ generation of configuration information based on the choices made
 while running
 [awesome builder](https://github.com/blocknetdx/exrproxy-env/blob/master/builder.py).
 
-This repo does not include a copy of sampler because the 2 projects 
+This repo does not include a copy of sampler because the two projects 
 use different licences.
 
 ## Usage.
@@ -89,6 +97,10 @@ of unsupported (by Blocknet) coins.
 Specifically, ALQO (XLQ), Crown (CRW) and Merge (MERGE) are not
 (currently) supported by BlockDX or Blocknet.
 
+Additionally, some of the scripts are 
+servicenode/masternode/systemnode-aware. If the coin is running as
+one of those node types the script checks if the node is online/started 
+and if not, reports the status instead of the block height.
 ## Extending monitoring.
 
 `sampler` is capable of monitoring anything you can generate values for.
@@ -106,18 +118,21 @@ likely be available with an API key which will have to be added to the
 `curl` call. Rate-limiting is less likely to be an issue with paid
 API access. 
 
-An alternative to paying for API access to a 3rd party explorer could
+An alternative to paying for API access to a third party explorer could
 be to compare heights between multiple copies of a chain you run on
 more than one servicenode. 
 
 Another possibility is to simply make an 
 `xrService GetBlockCount` call to the servicenode network, specifying
-a node count larger than 1 and hoping the consensus answer is correct.
+a node count larger than one and hoping the consensus answer is correct.
 Historically there have been many times when the servicenode consensus
 for a particular chain was incorrect so I have chosen not to take this
 approach. Maybe in the future when the network is larger and the majority
 of servicenode operators realise the importance of keeping their wallets
 correctly synced, this will be a more viable alternative.
+
+Yet another possibility is for the monitor to report the local chain 
+height, explorer chain height and servicenode consensus height. 
 
 If you do extend the monitoring, either through external scripts or 
 inline code in the sampler config, please consider contributing them
