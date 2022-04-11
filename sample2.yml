@@ -1,0 +1,274 @@
+# Fits nicely in an 80x50 terminal window
+sparklines:
+  - title: CPU usage
+    position: [[0, 0], [40, 9]]
+    rate-ms: 1000
+    scale: 0
+    sample: ps -A -o %cpu | awk '{s+=$1} END {print s}'
+gauges:
+  - title: RAM
+    rate-ms: 5000
+    position: [[40, 0], [40, 2]]
+    cur:
+        sample: free | awk '/Mem:/ {print $3}'
+    max:
+        sample: free | awk '/Mem:/ {print $2}'
+    min:
+        sample: echo 0
+  - title: SWAP
+    rate-ms: 5000
+    position: [[40, 3], [40, 2]]
+    cur:
+        sample: free | awk '/Swap:/ {print $3}'
+    max:
+        sample: free | awk '/Swap:/ {print $2}'
+    min:
+        sample: echo 0
+variables:
+# none of these are actually used; they're from failed experiments
+# variables can't be used for colours
+# sample values ignore embedded ANSI colour codes
+  alqo: 224
+  block: 192
+  crown: 160
+  merge: 128
+  scalaris: 96
+  prices: 64
+  uptime: 32
+  vps07: ssh vps07
+  RED: '\033[1;31m'
+  GREEN: '\033[1;32m'
+  YELLOW: '\033[1;33m'
+  BLUE: '\033[1;34m'
+  PURPLE: '\033[1;35m'
+  CYAN: '\033[1;36m'
+  WHITE: '\033[1;37m'
+  NC: '\033[0m' # No Color
+
+textboxes:
+  - title: Load average
+    position: [[40, 5], [25, 4]]
+    rate-ms: 2000
+    sample: cat /proc/loadavg | awk '{print $1 ", " $2 ", " $3}'
+
+  - title: Temp
+    position: [[65, 5], [15, 4]]
+    rate-ms: 2000
+    sample: sensors|grep "Package id 0:"|awk '{print $4}'
+
+  - title: ALQO
+    position: [[0, 9], [20, 4]]
+    rate-ms: 30000
+    color: 224
+    sample: ./height_xlq.sh
+
+  - title: BLOCKNET
+    position: [[20, 9], [20, 4]]
+    rate-ms: 30000
+    color: 192
+    sample: ./height_block.sh
+
+  - title: CROWN
+    position: [[40, 9], [20, 4]]
+    rate-ms: 30000
+    color: 160
+    sample: ./height_crw.sh
+
+  - title: MERGE
+    position: [[60, 9], [20, 4]]
+    rate-ms: 30000
+    color: 128
+    sample: ./height_merge.sh
+
+  - title: SCALARIS
+    position: [[0, 13], [20, 4]]
+    rate-ms: 30000
+    color: 96
+    sample: ./height_sca.sh
+
+# This sample originally used an XR call to get Bitcoin price but was
+# updated to just make the call locally to save on some network traffic.
+# The triggers don't work well/as expected/I need to RTFM some more.
+  - title: BTC
+    position: [[20, 13], [20, 4]]
+    rate-ms: 5000
+    color : 64
+#    sample: blocknet-cli xrservice cpprice BTC USD | awk '/reply/ {printf("USD %6.2f", $2)}'
+    sample: python3 cpprice.py BTC USD | awk '{printf("USD %6.2f", $1)}'
+#    triggers:
+#      - title: Falling
+#        condition: '[ $cur -lt $prev ] && echo 1 || echo 0'  # expects "1" as TRUE indicator
+#        actions:
+#          color: 20
+#          terminal-bell: true  # standard terminal bell, default = false
+#          sound: true   # NASA quindar tone, default = false
+#          visual: true  # visual notification on top of the component area, default = false
+#      - title: Rising
+#        condition: '[ $cur -gt $prev ] && echo 1 || echo 0'  # expects "1" as TRUE indicator
+#        actions:
+#          color: 230
+#          terminal-bell: true  # standard terminal bell, default = false
+#          sound: true   # NASA quindar tone, default = false
+#          visual: true  # visual notification on top of the component area, default = false
+#      - title: Static
+#        condition: '[ $cur -eq $prev ] && echo 1 || echo 0'  # expects "1" as TRUE indicator
+#        actions:
+#          color: 230
+#          terminal-bell: true  # standard terminal bell, default = false
+#          sound: true   # NASA quindar tone, default = false
+#          visual: false  # visual notification on top of the component area, default = false
+#          script: "say BTC price static" # an arbitrary script, which can use $cur, $prev and $label variables
+
+  - title: ETH
+    position: [[40, 13], [20, 4]]
+    rate-ms: 5000
+    color : 64
+    sample: python3 cpprice.py ETH GBP | awk '{printf("GBP %6.2f", $1)}'
+
+  - title: SQQQ
+    position: [[60, 13], [20, 4]]
+    rate-ms: 300000
+    color : 64
+    sample: python3 yfprice.py SQQQ | awk '{printf("USD %6.2f", $1)}'
+
+  - title: MN01 ALQO
+    position: [[0, 17], [20, 4]]
+    rate-ms: 30000
+    color : 224
+    sample: ssh mn01 /home/masternode/bin/height_xlq.sh
+
+  - title: MN01 CRW
+    position: [[20, 17], [20, 4]]
+    rate-ms: 30000
+    color : 160
+    sample: ssh mn01 /home/masternode/bin/height_crw.sh
+
+  - title: MN01 SCA
+    position: [[40, 17], [20, 4]]
+    rate-ms: 30000
+    color : 96
+    sample: ssh mn01 /home/masternode/bin/height_sca.sh
+
+  - title: OPS1 UPTIME
+    position: [[60, 17], [20, 4]]
+    rate-ms: 60000
+    color : 32
+    sample: ssh ops1 uptime|sed /,/s///g| awk '{print $3 " " $4 " " $5}'
+
+  - title: VPS03 ALQO
+    position: [[0, 21], [20, 4]]
+    rate-ms: 30000
+    color : 224
+    sample: ssh vps03 /home/masternode/bin/height_xlq.sh
+
+  - title: VPS03 CRW
+    position: [[20, 21], [20, 4]]
+    rate-ms: 30000
+    color : 160
+    sample: ssh vps07 /home/masternode/bin/height_crw.sh
+
+  - title: VPS03 SCA
+    position: [[40, 21], [20, 4]]
+    rate-ms: 30000
+    color : 96
+    sample: ssh vps03 /home/masternode/bin/height_sca.sh
+
+  - title: OPS2 UPTIME
+    position: [[60, 21], [20, 4]]
+    rate-ms: 60000
+    color : 32
+    sample: ssh ops2 uptime|sed /,/s///g| awk '{print $3 " " $4 " " $5}'
+
+  - title: VPS04 BLOCK
+    position: [[0, 25], [20, 4]]
+    rate-ms: 30000
+    color : 192
+    sample: ssh vps04 /home/masternode/bin/height_block.sh
+
+  - title: VPS04 CRW
+    position: [[20, 25], [20, 4]]
+    rate-ms: 30000
+    color : 160
+    sample: ssh vps07 /home/masternode/bin/height_crw.sh
+
+  - title: VPS04 MERGE
+    position: [[40, 25], [20, 4]]
+    rate-ms: 30000
+    color : 128
+    sample: ssh vps07 /home/masternode/bin/height_merge.sh
+
+  - title: OPS3 UPTIME
+    position: [[60, 25], [20, 4]]
+    rate-ms: 60000
+    color : 32
+    sample: ssh ops3 uptime|sed /,/s///g| awk '{print $3 " " $4 " " $5}'
+
+  - title: VPS05 BLOCK
+    position: [[0, 29], [20, 4]]
+    rate-ms: 30000
+    color : 192
+    sample: ssh vps05 /home/masternode/bin/height_block.sh
+
+  - title: VPS05 CRW
+    position: [[20, 29], [20, 4]]
+    rate-ms: 30000
+    color : 160
+    sample: ssh vps07 /home/masternode/bin/height_crw.sh
+
+  - title: P.MON MERGE
+    position: [[40, 29], [20, 4]]
+    rate-ms: 30000
+    color : 128
+    sample: ssh platformmonitor /home/walkjivefly/bin/height_merge.sh
+
+  - title: VPS07 UPTIME
+    position: [[60, 29], [20, 4]]
+    rate-ms: 60000
+    color : 32
+    sample: ssh vps07 uptime|sed /,/s///g| awk '{print $3 " " $4 " " $5}'
+
+  - title: VPS06 CRW
+    position: [[0, 33], [20, 4]]
+    rate-ms: 30000
+    color : 160
+    sample: ssh vps06 /home/masternode/bin/height_crw.sh
+
+  - title: BLACKPI CRW
+    position: [[20, 33], [20, 4]]
+    rate-ms: 30000
+    color : 160
+    sample: ssh blackpi height_crw.sh
+
+  - title: OPS1 AVAX DB
+    position: [[40, 33], [20, 4]]
+    rate-ms: 300000
+    sample: ssh ops1 sudo du -m /snode/AVAX/mainnet/v1.4.5 | awk '{print $1 " MB"}'
+
+  - title: VPS07 DISK
+    position: [[60, 33], [20, 4]]
+    rate-ms: 300000
+    sample: ssh vps07 df -m / | awk 'NR==2 {print $4 " MB free"}'
+
+  - title: VPS07 ALQO
+    position: [[0, 37], [20, 4]]
+    rate-ms: 30000
+    color : 224
+    sample: ssh vps07 /home/masternode/bin/height_xlq.sh
+
+  - title: VPS07 BLOCK
+    position: [[20, 37], [20, 4]]
+    rate-ms: 30000
+    color : 192
+    sample: ssh vps07 /home/masternode/bin/height_block.sh
+
+  - title: VPS07 CRW
+    position: [[40, 37], [20, 4]]
+    rate-ms: 30000
+    color : 160
+    sample: ssh vps07 /home/masternode/bin/height_crw.sh
+
+  - title: VPS07 MERGE
+    position: [[60, 37], [20, 4]]
+    rate-ms: 30000
+    color : 128
+    sample: ssh vps07 /home/masternode/bin/height_merge.sh

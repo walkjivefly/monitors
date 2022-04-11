@@ -42,6 +42,10 @@ while running
 This repo does not include a copy of sampler because the two projects 
 use different licences.
 
+## Prerequisites.
+* curl
+* jq
+  
 ## Usage.
 
 * Either clone the [sampler](https://github.com/sqshq/sampler)
@@ -53,7 +57,7 @@ for your platform in it.
 * Copy some or all of the height_xxx.sh scripts to the same directory
 as the sampler executable.
 
-* Copy sample.yml to config.yml and customise it for your environment.
+* Copy [sample.yml](sample.yml) to config.yml and customise it for your environment.
 The sample config is optimised for an 80x56 terminal window. It will 
 operate in a different size window but the results may not be visually
 appealing. Refer to the 
@@ -101,6 +105,24 @@ Additionally, some of the scripts are
 servicenode/masternode/systemnode-aware. If the coin is running as
 one of those node types the script checks if the node is online/started 
 and if not, reports the status instead of the block height.
+
+## Remote monitoring.
+`sampler` is capable of monitoring remote machines via ssh. You could have
+one session monitoring several different servicenodes although you might 
+run out of screen real estate. For example:
+
+![](screenshot_2.png)
+
+This example also includes some Python3 sources:
+* cpprice.py
+* yfprice.py
+
+with additional prerequisites given in [requirements.txt](requirements.txt):
+* ccxt
+* yfinance
+
+The config for this example is [sample2.yml](sample2.yml) 
+
 ## Extending monitoring.
 
 `sampler` is capable of monitoring anything you can generate values for.
