@@ -123,11 +123,12 @@ be to compare heights between multiple copies of a chain you run on
 more than one servicenode. 
 
 Another possibility is to simply make an 
-`xrService GetBlockCount` call to the servicenode network, specifying
+`blocknet-cli xrGetBlockCount coin count` call to the servicenode network
+for each coin you're interested in, specifying
 a node count larger than one and hoping the consensus answer is correct.
 Historically there have been many times when the servicenode consensus
 for a particular chain was incorrect so I have chosen not to take this
-approach. Maybe in the future when the network is larger and the majority
+approach. Perhaps in the future when the network is larger and the majority
 of servicenode operators realise the importance of keeping their wallets
 correctly synced, this will be a more viable alternative.
 
